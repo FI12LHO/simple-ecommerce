@@ -7,27 +7,19 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\PurchaseController;
 
-Route::controller(UserController::class, function () {
-    Route::group(['prefix' => 'auth'], function () {
-        Route::post('/', 'login');
-        Route::post('/register', 'register');
-        Route::get('/me', 'me');
-    });
+Route::group(['prefix' => 'auth'], function () {
+    Route::post('/',[UserController::class, 'login']);
+    Route::post('/register',[UserController::class, 'register']);
+    Route::get('/me',[UserController::class, 'me']);
 });
 
-Route::controller(ProductController::class, function () {
-    Route::group(['prefix' => 'product'], function () {
-        Route::get('/', 'index');
-        Route::post('/create', 'create');
-        Route::put('/update/{id}', 'update');
-        Route::delete('/delete/{id}', 'destroy');
-    });
+Route::group(['prefix' => 'product'], function () {
+    Route::get('/', [ProductController::class, 'index']);
+    Route::post('/create', [ProductController::class, 'create']);
+    Route::put('/update/{id}', [ProductController::class, 'update']);
+    Route::delete('/delete/{id}', [ProductController::class, 'destroy']);
 });
 
-Route::controller(SaleController::class, function () {
-    Route::post('/sale', 'create');
-});
+Route::post('/sale', [SaleController::class, 'create']);
 
-Route::controller(PurchaseController::class, function () {
-    Route::post('/purchase', 'create');
-});
+Route::post('/purchase', [PurchaseController::class, 'create']);
