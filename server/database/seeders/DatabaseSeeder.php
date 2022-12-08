@@ -14,11 +14,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $userId = Str::random(8);
-        $productId = Str::random(8);
-
         \App\Models\User::create([
-            'id' => $userId,
+            'id' => '#123',
             'name' => 'John Doe',
             'email' => 'john-doe@mail.com',
             'password' => '123456789',
@@ -30,7 +27,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         \App\Models\Product::create([
-            'id' => $productId,
+            'id' => '#321',
             'title' => 'Produto 1',
             'quantity' => 1,
             'description' => 'Um otimo produto dependendo do seu uso.',
@@ -58,9 +55,9 @@ class DatabaseSeeder extends Seeder
 
         \App\Models\Sale::create([
             'id' => Str::random(8),
-            'id_user' => $userId,
-            'id_product' => $productId,
-            'price' => (double) 75.00,
+            'id_user' => '#123',
+            'id_product' => '#321',
+            'final_price' => (double) 75.00,
             'status' => 'success'
         ]);
     }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use PDOException;
 use Utils\Token;
 
 class UserController extends Controller
@@ -50,18 +51,25 @@ class UserController extends Controller
             'CPF' => ['required', 'string'],
         ]);
 
-        User::create([
-            'id' => Str::random(8),
-            'name' => $request -> post('name'),
-            'email' => $request -> post('email'),
-            'password' => $request -> post('password'),
-            'address' =>  $request -> post('address'),
-            'district' => $request -> post('district'),
-            'number' => $request -> post('number'),
-            'CEP' => $request -> post('CEP'),
-            'CPF' => $request -> post('CPF'),
-        ]);
+        try {
+            User::create([
+                'id' => Str::random(8),
+                'name' => $request -> post('name'),
+                'email' => $request -> post('email'),
+                'password' => $request -> post('password'),
+                'address' =>  $request -> post('address'),
+                'district' => $request -> post('district'),
+                'number' => $request -> post('number'),
+                'CEP' => $request -> post('CEP'),
+                'CPF' => $request -> post('CPF'),
+            ]);
 
+        } catch (PDOException $e) {
+            return response() -> json([
+                'Error' => 'Internal Server Error'
+            ], 500);
+        }
+        
         return response() -> json([
             'status' => 'success',
             'message' => 'User created successfully',

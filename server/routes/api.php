@@ -5,7 +5,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SaleController;
-use App\Http\Controllers\PurchaseController;
 
 Route::group(['prefix' => 'auth'], function () {
     Route::post('/',[UserController::class, 'login']);
@@ -21,6 +20,5 @@ Route::group(['prefix' => 'product', 'middleware' => 'token.access'], function (
 
 Route::group(['middleware' => 'token.access'], function () {
     Route::post('/sale', [SaleController::class, 'create']);
-    Route::post('/purchase', [PurchaseController::class, 'create']);
     Route::get('/me',[UserController::class, 'me']);
 });

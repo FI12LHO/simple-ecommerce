@@ -41,7 +41,7 @@ class Token {
                 $value = isset(explode(':', $array)[1]) ? explode(':', $array)[1] : '';
 
                 if ($key == 'created') {
-                    Token::validateCreationDate($value, 3);
+                    Token::validateCreationDate($value, 3   );
 
                     continue;
                 }
@@ -62,7 +62,7 @@ class Token {
         $now = date("Y-m-d H:i:s");
         $diff = intval(abs(strtotime($now) - strtotime($created)) / 60);
 
-        if ($diff > $timeInMinutesToExpire || empty($diff)) {
+        if ($diff > $timeInMinutesToExpire) {
             // O token expirou
             Token::$expired = true;
             return null;

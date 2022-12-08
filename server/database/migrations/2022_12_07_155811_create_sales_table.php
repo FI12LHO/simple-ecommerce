@@ -15,19 +15,18 @@ class CreateSalesTable extends Migration
     {
         Schema::create('sales', function (Blueprint $table) {
             $table -> string('id') -> primary();
-            $table -> string('id_user') -> unsigned();
-            $table -> string('id_product') -> unsigned();
-            $table -> double('price');
-            $table -> enum('status', ['success', 'fail']);
+            $table -> string('id_user');
+            $table -> string('id_product');
+            $table -> double('final_price');
+            $table -> string('purchase_link') -> nullable();
+            $table -> enum('status', ['success', 'process', 'fail']);
             $table -> timestamps();
 
             $table -> foreign('id_user') 
-                -> references('id') -> on('users') 
-                -> onUpdate('cascade') -> onDelete('cascade');
+                -> references('id') -> on('users');
                 
             $table -> foreign('id_product') 
-                -> references('id') -> on('products') 
-                -> onUpdate('cascade') -> onDelete('cascade');
+                -> references('id') -> on('products');
         });
     }
 

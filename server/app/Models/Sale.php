@@ -17,7 +17,8 @@ class Sale extends Model
         'id',
         'id_user',
         'id_product',
-        'price',
+        'final_price',
         'status',
+        'purchase_link',
     ];
 }
