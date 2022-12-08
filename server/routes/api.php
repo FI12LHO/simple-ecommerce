@@ -22,5 +22,5 @@ Route::group(['prefix' => 'product', 'middleware' => 'token.access'], function (
 Route::group(['middleware' => 'token.access'], function () {
     Route::post('/sale', [SaleController::class, 'create']);
     Route::post('/purchase', [PurchaseController::class, 'create']);
-    Route::get('/me',[UserController::class, 'me']);
+    Route::post('/me',[UserController::class, 'me']);
 });

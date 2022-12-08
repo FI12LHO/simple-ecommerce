@@ -26,6 +26,25 @@ class User extends Authenticatable
         'CPF'
     ];
 
+    protected $hidden = [
+        'password'
+    ];
+
+    static function login(String $email, String $password) {
+        try {
+            $user = DB::table('users') 
+                -> where('email', '=', $email) 
+                -> where('password', '=', $password) 
+                -> first();
+
+            return $user;
+
+        } catch (PDOException $e) {
+            return '';
+            
+        }   
+    }
+
     static function signup($data) {
         $user = $data;
         $user['id'] =  Str::random(8);

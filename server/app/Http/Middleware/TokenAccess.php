@@ -20,18 +20,14 @@ class TokenAccess
 
         if (empty($token_access)) {
             return response() -> json([
-                'Error' => 'Token not found or does exist'
+                'Error' => 'Token not found or does not exist'
             ], 401);
         }
 
-        if ( empty( Token::desencrypt($token_access)['id'] ) ) {
+        if ( empty( Token::desencrypt($token_access)['email'] ) ) {
             return response() -> json([
                 'Error' => 'Token not valid'
             ], 401);
         }
-
-        // $a = Token::encrypt(['name' => 'Marlom', 'email' => 'marlom@gmail.com', 'id' => '123ABC']);
-
-        // return response() -> json(Token::desencrypt($a, true)['id']);
     }
 }

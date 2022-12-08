@@ -9,14 +9,15 @@ class Token {
 
     static function encrypt(Array $array) {
         try {
-            $encryptString = '';
+            $date = date("h.i.s.a.y.m.d");
+            $encryptString = "now:$date%&%";
             $i = 1;
 
             foreach ($array as $key => $value) {
                 $encryptString .= "$key:$value";
 
                 if($i < count($array)) {
-                    $encryptString .= '-';
+                    $encryptString .= '%&%';
                 }
 
                 $i++;
@@ -35,10 +36,14 @@ class Token {
             $encryptString = Crypt::decryptString($string);
             $desencryptArray = array();
 
-            foreach (explode('-', $encryptString) as $array) {
+            foreach (explode('%&%', $encryptString) as $array) {
                 $key = isset(explode(':', $array)[0]) ? explode(':', $array)[0] : null;
                 $value = isset(explode(':', $array)[1]) ? explode(':', $array)[1] : '';
 
+                if ($key == 'now') {
+                    continue;
+                }
+                
                 $desencryptArray[$key] = $value;
             }
             
