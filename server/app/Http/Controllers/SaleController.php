@@ -20,16 +20,6 @@ class SaleController extends Controller
         ]);
 
         try {
-            $id = Str::random(8);
-            
-            Sale::create([
-                'id' => $id,
-                'id_user' => $request -> post('id_user'),
-                'id_product' => $request -> post('id_product'),
-                'final_price' => $request -> post('final_price'),
-                'status' => $request -> post('status'),
-            ]);
-
             $product = Product::getProductWithId($request -> post('id_product'));
 
             if (empty($product)) {
@@ -45,11 +35,14 @@ class SaleController extends Controller
             $purchase::definePreference();
             $link = $purchase::getPurchaseLink()['link'];
 
-            if (!$this -> updateOrFail($id, $link)) {
-                return response() -> json([
-                    'Error' => 'Internal Server Error'
-                ], 500);
-            }
+            Sale::create([
+                'id' => Str::random(8),
+                'id_user' => $request -> post('id_user'),
+                'id_product' => $request -> post('id_product'),
+                'final_price' => $request -> post('final_price'),
+                'status' => $request -> post('status'),
+                'purchase_link' => $link,
+            ]);
 
             return response() -> json([
                 'status' => 'success',
@@ -63,23 +56,6 @@ class SaleController extends Controller
             return response() -> json([
                 'Error' => 'Internal Server Error'
             ], 500);
-        }
-    }
-
-    private function updateOrFail(String $id, String $link) {
-        try {
-            $sale = Sale::where(['id' => $id]) -> first();
-
-            if (empty($sale)) {
-                return false;
-            }
-
-            $sale -> update(['purchase_link' => $link]);
-            
-            return true;
-
-        } catch (PDOException) {
-            return false;
         }
     }
 }
