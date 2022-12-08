@@ -5,12 +5,12 @@ use Exception;
 use Illuminate\Support\Facades\Crypt; 
 
 class Token {
-    function __construct() {}
+    private static Bool $expired = false;
 
     static function encrypt(Array $array) {
         try {
-            $date = date("h.i.s.a.y.m.d");
-            $encryptString = "now:$date%&%";
+            $date = date("Y.m.d H+i+s");
+            $encryptString = "created:$date%&%";
             $i = 1;
 
             foreach ($array as $key => $value) {
@@ -40,7 +40,9 @@ class Token {
                 $key = isset(explode(':', $array)[0]) ? explode(':', $array)[0] : null;
                 $value = isset(explode(':', $array)[1]) ? explode(':', $array)[1] : '';
 
-                if ($key == 'now') {
+                if ($key == 'created') {
+                    Token::validateCreationDate($value, 3);
+
                     continue;
                 }
                 
@@ -53,5 +55,25 @@ class Token {
             return '';
             
         }        
+    }
+
+    private static function validateCreationDate(String $created, int $timeInMinutesToExpire = 5) {
+        $created = str_replace('+', ':', str_replace('.', '-', $created));
+        $now = date("Y-m-d H:i:s");
+        $diff = intval(abs(strtotime($now) - strtotime($created)) / 60);
+
+        if ($diff > $timeInMinutesToExpire || empty($diff)) {
+            // O token expirou
+            Token::$expired = true;
+            return null;
+        }
+
+        Token::$expired = false;
+
+        return null;
+    }
+
+    static function isExpired() {
+        return Token::$expired;
     }
 }

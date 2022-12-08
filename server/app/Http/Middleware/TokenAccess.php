@@ -16,7 +16,9 @@ class TokenAccess
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
     public function handle(Request $request, Closure $next) {
-        $token_access = $request -> post('token_access');
+        $token = new Token();
+        
+        $token_access = $request -> header('Token-Access');
 
         if (empty($token_access)) {
             return response() -> json([
@@ -24,10 +26,18 @@ class TokenAccess
             ], 401);
         }
 
-        if ( empty( Token::desencrypt($token_access)['email'] ) ) {
+        if ( empty($token::desencrypt($token_access)['name']) ) {
             return response() -> json([
                 'Error' => 'Token not valid'
             ], 401);
         }
+
+        if ($token::isExpired()) {
+            return response() -> json([
+                'Error' => 'Token expired'
+            ], 401);
+        }
+
+        return $next($request);
     }
 }

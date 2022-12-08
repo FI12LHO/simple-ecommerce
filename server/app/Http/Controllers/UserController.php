@@ -69,12 +69,10 @@ class UserController extends Controller
     }
 
     public function me(Request $request) {
-        // $token_access = Token::desencrypt($request -> post('token_access'));
-
-        // return response() -> json($token_access);
-
-        return '';
-
-        // return response() -> json(User::where($token_access) -> first());
+        $token_access = Token::desencrypt($request -> header('Token-Access'));
+        
+        return response() -> json(
+            User::where($token_access) -> first()
+        );
     }
 }
