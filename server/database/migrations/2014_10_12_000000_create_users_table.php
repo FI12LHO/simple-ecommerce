@@ -18,10 +18,11 @@ class CreateUsersTable extends Migration
             $table -> string('name');
             $table -> string('email') -> unique();
             $table -> string('password');
-            $table -> string('address');
-            $table -> string('district');
-            $table -> integer('number');
-            $table -> string('CEP', 7);
+            $table -> string('address') -> nullable();
+            $table -> string('district') -> nullable();
+            $table -> integer('number') -> nullable();
+            $table -> string('CEP', 7) -> nullable();
+            $table -> string('phone') -> nullable();
             $table -> string('CPF', 11) -> uniqid();
             $table -> timestamps();
         });

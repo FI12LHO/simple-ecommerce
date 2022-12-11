@@ -23,6 +23,7 @@ class User extends Authenticatable
         'district',
         'number',
         'CEP',
+        'phone',
         'CPF'
     ];
 

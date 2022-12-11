@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             'address' => 'Street one',
             'district' => 'District central',
             'number' => 42, 
+            'phone' => '550012345678',
             'CEP' => '1234567',
             'CPF' => '00000000000'
         ]);
